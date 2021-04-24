@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Qt: Benutzer&shy;definiertes Widget – veeman.github.io – Persöhnlicher Blog</title>
+    <!-- Begin Jekyll SEO tag v2.7.1 -->
+<meta name="generator" content="Jekyll v4.2.0" />
+<meta property="og:title" content="Qt: Benutzer­definiertes Widget" />
+<meta name="author" content="Vitalij Mast" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Wer mit Qt arbeitet der hat sich früher oder später schon mal gefragt wie erstelle ich ein eigenes Steuerelement und/oder wie zeige ich meine eigene Grafik in meiner GUI an. Eins vorweg ich arbeit mit Visual Studio und dem Plugin dafür inklusive des Qt-Designers. Mit dem Qt-Creator sollten die hier Beschriebenen Schritte jedoch ähnlich ablaufen. In diesem Artikel möchte ich euch zeigen wie einfach es sein kann sowas zu realisieren und wie man das Steuerelement direkt im Qt Designer platziert. Im Bild rechts sieht man einen Schalter der ein Volumenmeter, welches auch von Windows verwendet wird um die Sound- ausgabe zu visualisieren, steuert. Die Programmierung von diesem wird im folgendem erklärt." />
+<meta property="og:description" content="Wer mit Qt arbeitet der hat sich früher oder später schon mal gefragt wie erstelle ich ein eigenes Steuerelement und/oder wie zeige ich meine eigene Grafik in meiner GUI an. Eins vorweg ich arbeit mit Visual Studio und dem Plugin dafür inklusive des Qt-Designers. Mit dem Qt-Creator sollten die hier Beschriebenen Schritte jedoch ähnlich ablaufen. In diesem Artikel möchte ich euch zeigen wie einfach es sein kann sowas zu realisieren und wie man das Steuerelement direkt im Qt Designer platziert. Im Bild rechts sieht man einen Schalter der ein Volumenmeter, welches auch von Windows verwendet wird um die Sound- ausgabe zu visualisieren, steuert. Die Programmierung von diesem wird im folgendem erklärt." />
+<link rel="canonical" href="https://veeman.github.io/posts/2013/qt-customwidget/" />
+<meta property="og:url" content="https://veeman.github.io/posts/2013/qt-customwidget/" />
+<meta property="og:site_name" content="veeman.github.io" />
+<meta property="og:image" content="https://veeman.github.io/images/2013-02-02-front-customwidget.gif" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2013-02-02T00:00:00+01:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://veeman.github.io/images/2013-02-02-front-customwidget.gif" />
+<meta property="twitter:title" content="Qt: Benutzer­definiertes Widget" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","image":"https://veeman.github.io/images/2013-02-02-front-customwidget.gif","url":"https://veeman.github.io/posts/2013/qt-customwidget/","headline":"Qt: Benutzer­definiertes Widget","dateModified":"2013-02-02T00:00:00+01:00","datePublished":"2013-02-02T00:00:00+01:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://veeman.github.io/posts/2013/qt-customwidget/"},"author":{"@type":"Person","name":"Vitalij Mast"},"description":"Wer mit Qt arbeitet der hat sich früher oder später schon mal gefragt wie erstelle ich ein eigenes Steuerelement und/oder wie zeige ich meine eigene Grafik in meiner GUI an. Eins vorweg ich arbeit mit Visual Studio und dem Plugin dafür inklusive des Qt-Designers. Mit dem Qt-Creator sollten die hier Beschriebenen Schritte jedoch ähnlich ablaufen. In diesem Artikel möchte ich euch zeigen wie einfach es sein kann sowas zu realisieren und wie man das Steuerelement direkt im Qt Designer platziert. Im Bild rechts sieht man einen Schalter der ein Volumenmeter, welches auch von Windows verwendet wird um die Sound- ausgabe zu visualisieren, steuert. Die Programmierung von diesem wird im folgendem erklärt.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+
+
+
+
+<meta property="og:description" content="
+Wer mit Qt arbeitet der hat sich früher oder später schon mal gefragt wie erstelle ich 
+ein eigenes Steuerelement und/oder wie zeige ich meine eigene Grafik in meiner GUI an.
+Eins vorweg ich arbeit mit Visual Studio und dem Plugin dafür inklusive des Qt-Designers.
+Mit dem Qt-Creator sollten die hier Beschriebenen Schritte jedoch ähnlich ablaufen.
+
+In diesem Artikel möchte ich euch zeigen wie einfach es sein kann sowas zu realisieren
+und wie man das Steuerelement direkt im Qt Designer platziert. Im Bild rechts sieht man
+einen Schalter der ein Volumenmeter, welches auch von Windows verwendet wird um
+die Sound- ausgabe zu visualisieren, steuert. Die Programmierung von diesem wird
+im folgendem erklärt.
+" />
+
+<meta name="author" content="veeman.github.io" />
+
+
+<meta property="og:title" content="Qt: Benutzer&shy;definiertes Widget" />
+<meta property="twitter:title" content="Qt: Benutzer&shy;definiertes Widget" />
+
+
+
+<meta property="og:image" content="https://veeman.github.io/images/2013-02-02-front-customwidget.gif"/>
+<meta property="twitter:image" content="https://veeman.github.io/images/2013-02-02-front-customwidget.gif"/>
+
+
+
+    <link rel="stylesheet" type="text/css" href="/assets/style.css" />
+    <link rel="alternate" type="application/rss+xml" title="veeman.github.io - Persöhnlicher Blog" href="/feed.xml" />
+    <link rel="canonical" href="https://veeman.github.io/posts/2013/qt-customwidget/" />
+
+    <meta name="theme-color" content="#000000">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    
+
+  </head>
+
+  <body>
+    <div class="wrapper-container">
+      <div class="wrapper-masthead">
+        <div class="container">
+          <header class="masthead clearfix">
+            <a href="/" class="site-avatar"><img src="/images/logo.png" alt="" /></a>
+
+            <div class="site-info">
+              <h1 class="site-name"><a href="/">veeman.github.io</a></h1>
+              <p class="site-description">Persöhnlicher Blog</p> 
+            </div>
+
+            <nav>
+              <a href="/">Blog</a>
+			  <a href="/pages/categories">Kategorien</a>
+              <a href="/pages/search">Suchen</a>
+            </nav>
+          </header>
+        </div>
+      </div>
+
+      <div class="wrapper-main">
+        <div id="main" role="main" class="container">
+          <article class="post detailed">
+  <h1>Qt: Benutzer&shy;definiertes Widget</h1>
+
+  <div>
+    <p class="author_title">Vitalij Mast · 2 Februar 2013</p>
+    
+    <div class="post-tags">
+      
+      
+        <a href="/pages/categories/#c/++">c/++</a>
+        &nbsp;
+      
+        <a href="/pages/categories/#qt">qt</a>
+        
+      
+    </div>
+  </div>
+    
+  <div class="entry">
+    <p style="clear:both"><img src="/images/2013-02-02-front-customwidget.gif" alt="" style="float:right" />
+Wer mit Qt arbeitet der hat sich früher oder später schon mal gefragt wie erstelle ich 
+ein eigenes Steuerelement und/oder wie zeige ich meine eigene Grafik in meiner GUI an.<br />
+Eins vorweg ich arbeit mit Visual Studio und dem Plugin dafür inklusive des Qt-Designers.
+Mit dem Qt-Creator sollten die hier Beschriebenen Schritte jedoch ähnlich ablaufen.
+<br />
+In diesem Artikel möchte ich euch zeigen wie einfach es sein kann sowas zu realisieren
+und wie man das Steuerelement direkt im Qt Designer platziert. Im Bild rechts sieht man
+einen Schalter der ein Volumenmeter, welches auch von Windows verwendet wird um
+die Sound- ausgabe zu visualisieren, steuert. Die Programmierung von diesem wird
+im folgendem erklärt.</p>
+
+<p>Zunächst erstellen wir uns eine von QWidget abgeleitete Klasse namens QVolumeMeter
+und deklarieren uns die virtuelle Funktion paintEvent. Diese Funktion wird von
+der Elternklasse immer dann aufgerufen wenn das Steuerelement gezeichnet werden
+soll. Die Header-Datei sollte dann in etwa so aussehen:</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><div class="line-1"><span class="cp">#ifndef QVOLUMEMETER_H</span>
+</div><div class="line-2"><span class="cp">#define QVOLUMEMETER_H</span>
+</div><div class="line-3"><span class="cp">#include &lt;QWidget&gt;</span>
+</div><div class="line-4">
+</div><div class="line-5"><span class="k">class</span> <span class="nc">QVolumeMeter</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QWidget</span>
+</div><div class="line-6"><span class="p">{</span>
+</div><div class="line-7">	<span class="n">Q_OBJECT</span>
+</div><div class="line-8">	
+</div><div class="line-9"><span class="nl">public:</span>
+</div><div class="line-10">	<span class="n">QVolumeMeter</span><span class="p">(</span><span class="n">QWidget</span> <span class="o">*</span><span class="n">parent</span><span class="p">);</span>
+</div><div class="line-11">	<span class="o">~</span><span class="n">QVolumeMeter</span><span class="p">();</span>
+</div><div class="line-12">	
+</div><div class="line-13"><span class="nl">protected:</span>
+</div><div class="line-14">	<span class="k">virtual</span> <span class="kt">void</span> <span class="n">paintEvent</span><span class="p">(</span><span class="n">QPaintEvent</span> <span class="o">*</span><span class="n">event</span><span class="p">);</span>
+</div><div class="line-15">	
+</div><div class="line-16"><span class="p">};</span>
+</div></code></pre></figure>
+
+<p>Nun sollte man sich zunächst Gedanken machen wie man das was Dargestellt werden 
+soll am besten intern Beschreibt. Ich habe wie es für die meisten Fortschrittsanzeigen
+gemacht wird mir drei Variablen angelegte mit Start, Stop und Position, jeweils
+mit dem Typ float. An dieser Stelle ist es relativ egal welchen Typ ihr nehmt ihr
+solltet nur beachten dass ihr die Verwendete Typen richtig für eure Funktion
+interpretiert. Nun definieren wir für diese Variablen wie es sich gehört jeweils
+drei sogenannte Getter und Setter Funktionen mit denen man die Werte auslesen
+und beschreiben kann. Die Getter Funktionen sollten in diesem Fall klar sein,
+sie geben einfach den aktuell eingestellten Wert wieder zurück. Die Setter Funktionen
+führen jedoch in meinem Fall noch die Prüfung der übergebenen Werte durch, zb. 
+damit der Stop-Wert sich nicht vor dem Start-Wert befindet und umgekehrt. 
+Eine mögliche Implementierung könnte dann so aussehen (ich habe für stop 
+und start hier min un max verwendet):</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><div class="line-1"><span class="kt">void</span> <span class="n">QVolumeMeter</span><span class="o">::</span><span class="n">setLevelMin</span><span class="p">(</span><span class="kt">float</span> <span class="n">min</span><span class="p">)</span>
+</div><div class="line-2"><span class="p">{</span> 
+</div><div class="line-3">	<span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevelMin</span><span class="o">=</span><span class="n">min</span><span class="p">;</span> 
+</div><div class="line-4">	<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevelMax</span><span class="o">&lt;</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevelMin</span><span class="p">)</span>
+</div><div class="line-5">		<span class="n">qSwap</span><span class="p">(</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevelMax</span><span class="p">,</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevelMin</span><span class="p">);</span>
+</div><div class="line-6">	<span class="k">this</span><span class="o">-&gt;</span><span class="n">update</span><span class="p">();</span> 
+</div><div class="line-7"><span class="p">};</span>
+</div><div class="line-8">
+</div><div class="line-9"><span class="kt">void</span> <span class="n">QVolumeMeter</span><span class="o">::</span><span class="n">setLevelMax</span><span class="p">(</span><span class="kt">float</span> <span class="n">max</span><span class="p">)</span>
+</div><div class="line-10"><span class="p">{</span> 
+</div><div class="line-11">	<span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevelMax</span><span class="o">=</span><span class="n">max</span><span class="p">;</span> 
+</div><div class="line-12">	<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevelMax</span><span class="o">&lt;</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevelMin</span><span class="p">)</span>
+</div><div class="line-13">		<span class="n">qSwap</span><span class="p">(</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevelMax</span><span class="p">,</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevelMin</span><span class="p">);</span>
+</div><div class="line-14">	<span class="k">this</span><span class="o">-&gt;</span><span class="n">update</span><span class="p">();</span> 
+</div><div class="line-15"><span class="p">};</span>
+</div><div class="line-16">
+</div><div class="line-17"><span class="kt">void</span> <span class="n">QVolumeMeter</span><span class="o">::</span><span class="n">setLevel</span><span class="p">(</span><span class="kt">float</span> <span class="n">lvl</span><span class="p">)</span>
+</div><div class="line-18"><span class="p">{</span> 
+</div><div class="line-19">	<span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevel</span><span class="o">=</span><span class="n">lvl</span><span class="p">;</span> 
+</div><div class="line-20">	<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevel</span><span class="o">&gt;</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevelMax</span><span class="p">)</span>
+</div><div class="line-21">		<span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevel</span><span class="o">=</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevelMax</span><span class="p">;</span>
+</div><div class="line-22">	<span class="k">else</span>
+</div><div class="line-23">	<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevel</span><span class="o">&lt;</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevelMin</span><span class="p">)</span>
+</div><div class="line-24">		<span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevel</span><span class="o">=</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevelMin</span><span class="p">;</span>
+</div><div class="line-25">	<span class="k">this</span><span class="o">-&gt;</span><span class="n">update</span><span class="p">();</span> 
+</div><div class="line-26"><span class="p">};</span>
+</div></code></pre></figure>
+
+<p>Man beachte bei jeder Funktion den letzten Befehl update. Was macht nun dieser Befehl?
+Es gibt neben update noch den Befehl repaint. Der unterschied zwischen beiden ist, 
+dass repaint das Steuerelement sofort neu zeichnet, update hingegen das Neuzeichnen
+in „Auftrag“ gibt, sodass wenn mehrere update Befehle eingehen das Steuerelement nur
+einmal neu gezeichnet wird. Warum benutz ich hier nun update anstelle von repaint?
+Ganz einfach, wenn man mehrmals diese Funktionen innerhalb einer Aktion aufruft,
+soll sich das Steuerelement möglichst erst nach dem letzten update Aufruf neu zeichnen
+um alle neuen Informationen anzuzeigen. Würde man den Befehl repaint verwenden würde
+dies das Steuerelement jedesmal zum Neuzeichnen veranlassen und das Programm zum stocken bringen,
+da das Neuzeichnen eines Steuerelementes im vergleich viel Rechenleistung beansprucht.
+Von daher sollte man darauf achten, dass man das Steuerelement auch nur dann neue
+Zeichnet wenn es nötig ist.</p>
+
+<p>Kommen wir endlich zum Zeichnen des Steuerelements. Da ich an dieser Stelle
+ein fertiges Bild auf das Steuerelement male ist die Zeichenroutine auch
+relativ simple. Ich habe das Bild als Qt-Ressource eingebunden und lade
+dieses im Konstruktor des eigenen Steuerelements:</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="n">pTemplate</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">QImage</span><span class="p">(</span><span class="s">":/QTestExampleWidget/Resources/volumeMeter.png"</span><span class="p">);</span></code></pre></figure>
+
+<p>Ich möchte an diese Stelle hinweisen, dass wenn man mehrere Steuerelemente
+der selben eigenen Klasse verwendet sich dann eine Hilfsklasse schreiben
+sollte um die Bilder besser zu verwalten, da sonst für jedes Steuerelement
+das selbe Bild immer wieder geladen wird.</p>
+
+<p>Schließlich wird das Bild in der Zeichenfunktion mit Hilfe eines <code class="language-plaintext highlighter-rouge">QPainter</code>
+Objekts auf das Steuerelement gezeichnet:</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><div class="line-1"><span class="kt">void</span> <span class="n">QVolumeMeter</span><span class="o">::</span><span class="n">paintEvent</span><span class="p">(</span><span class="n">QPaintEvent</span> <span class="o">*</span><span class="n">event</span><span class="p">)</span>
+</div><div class="line-2"><span class="p">{</span>
+</div><div class="line-3">	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">pTemplate</span><span class="p">)</span>
+</div><div class="line-4">		<span class="k">return</span><span class="p">;</span>
+</div><div class="line-5">		
+</div><div class="line-6">	<span class="n">QPainter</span> <span class="n">painter</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+</div><div class="line-7">	<span class="n">painter</span><span class="p">.</span><span class="n">drawImage</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">*</span><span class="n">pTemplate</span><span class="p">,</span> <span class="n">width</span><span class="p">(),</span> <span class="mi">0</span><span class="p">);</span>
+</div><div class="line-8">	
+</div><div class="line-9">	<span class="kt">float</span> <span class="n">range</span> <span class="o">=</span> <span class="p">(</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevelMax</span> <span class="o">-</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevelMin</span><span class="p">);</span>
+</div><div class="line-10">	<span class="kt">float</span> <span class="n">pos</span> <span class="o">=</span> <span class="p">(</span><span class="n">range</span><span class="o">-</span><span class="p">(</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevel</span> <span class="o">-</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevelMin</span><span class="p">)</span><span class="o">/</span><span class="n">range</span><span class="p">)</span><span class="o">*</span> <span class="kt">float</span><span class="p">(</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">height</span><span class="p">())</span> <span class="p">;</span>
+</div><div class="line-11">	<span class="n">QRect</span> <span class="n">rect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">width</span><span class="p">(),</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">height</span><span class="p">());</span>
+</div><div class="line-12">	<span class="n">painter</span><span class="p">.</span><span class="n">drawImage</span><span class="p">(</span><span class="n">rect</span><span class="p">,</span> <span class="o">*</span><span class="n">pTemplate</span><span class="p">,</span> <span class="n">rect</span><span class="p">);</span>
+</div><div class="line-13">	
+</div><div class="line-14">	<span class="n">painter</span><span class="p">.</span><span class="n">end</span><span class="p">();</span>
+</div><div class="line-15"><span class="p">}</span>
+</div></code></pre></figure>
+
+<p>Mein Bild besteht aus zwei Hälften, die eine Hälfte zeigt den gefüllten Status
+und die andere den Ungefühlten Status. Die Berechnung oben in der Zeichenfunktion
+mixt die zwei Hälften jeweils zu einem zusamen sodass man eine Trennung der Hellen
+und dunklen Flächen erhält und damit eine Art Höhenanzeige.</p>
+
+<p>Um nun das Steuerelement im Qt Designer verwenden zu können deklariere ich noch
+ein paar Metaeigenschaften und Slotfunktionen:</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><div class="line-1">	<span class="n">Q_PROPERTY</span><span class="p">(</span><span class="kt">float</span> <span class="n">levelMin</span> <span class="n">READ</span> <span class="n">levelMin</span> <span class="n">WRITE</span> <span class="n">setLevelMin</span><span class="p">)</span>
+</div><div class="line-2">	<span class="n">Q_PROPERTY</span><span class="p">(</span><span class="kt">float</span> <span class="n">levelMax</span> <span class="n">READ</span> <span class="n">levelMax</span> <span class="n">WRITE</span> <span class="n">setLevelMax</span><span class="p">)</span>
+</div><div class="line-3">	<span class="n">Q_PROPERTY</span><span class="p">(</span><span class="kt">float</span> <span class="n">level</span> <span class="n">READ</span> <span class="n">level</span> <span class="n">WRITE</span> <span class="n">setLevel</span><span class="p">)</span>
+</div><div class="line-4"><span class="p">...</span>
+</div><div class="line-5">	<span class="kt">void</span> <span class="nf">setPercent</span><span class="p">(</span><span class="kt">int</span> <span class="n">value</span><span class="p">);</span>
+</div></code></pre></figure>
+
+<p>Mit diesen Eigenschaften kann nun im Qt Designer die Eigenschafts-Werte vor
+der Laufzeit festgelegt werden. Dafür erstellen wir zunächst im Qt Designer
+ein einfaches QWidget Objekt und klicken mit der rechten Maustaste darauf
+und dann auf Promote to … im nächsten Fenster geben wir unter new die Daten
+von unserem eigene Steuerelement an (Bassisklasse, Unser neuer Klassenname
+sowie den Headerdateinamen) und fügen diese hinzu. Anschließend können wir
+mit einem klick auf Promote dem Designer sagen dass das ausgewählte Widget
+das von uns erstellte QVolumeMeter-Widget ist. Es wird jedoch leer angezeigt,
+das ist normal da der Qt Designer ohne ein Plugin nicht wissen kann wie wir
+dieses programmiert haben. Im Propertyeditor sehen wir dann auch nichts
+können jedoch die Eigenschaften die wir für den Metainterpreter hinterlegt
+haben selbst hinzufügen und verwenden.<br />
+Die Zusätzliche setPercent-Funktion hab ich noch hinzugefügt um ein Signal
+eines QSlider-Objekts direkt mit meinem zu Verknüpfen.</p>
+
+<p>Die fertige Klasse sieht letzten endlich dann so aus:</p>
+
+<p>Header:</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><div class="line-1"><span class="cp">#ifndef QVOLUMEMETER_H</span>
+</div><div class="line-2"><span class="cp">#define QVOLUMEMETER_H</span>
+</div><div class="line-3"><span class="cp">#include &lt;QWidget&gt;</span>
+</div><div class="line-4"><span class="cp">#include &lt;QImage&gt;</span>
+</div><div class="line-5">
+</div><div class="line-6"><span class="k">class</span> <span class="nc">QVolumeMeter</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QWidget</span>
+</div><div class="line-7"><span class="p">{</span>
+</div><div class="line-8">	<span class="n">Q_OBJECT</span>
+</div><div class="line-9">	<span class="n">Q_PROPERTY</span><span class="p">(</span><span class="kt">float</span> <span class="n">levelMin</span> <span class="n">READ</span> <span class="n">levelMin</span> <span class="n">WRITE</span> <span class="n">setLevelMin</span><span class="p">)</span>
+</div><div class="line-10">	<span class="n">Q_PROPERTY</span><span class="p">(</span><span class="kt">float</span> <span class="n">levelMax</span> <span class="n">READ</span> <span class="n">levelMax</span> <span class="n">WRITE</span> <span class="n">setLevelMax</span><span class="p">)</span>
+</div><div class="line-11">	<span class="n">Q_PROPERTY</span><span class="p">(</span><span class="kt">float</span> <span class="n">level</span> <span class="n">READ</span> <span class="n">level</span> <span class="n">WRITE</span> <span class="n">setLevel</span><span class="p">)</span>
+</div><div class="line-12">	
+</div><div class="line-13"><span class="nl">public:</span>
+</div><div class="line-14">	<span class="n">QVolumeMeter</span><span class="p">(</span><span class="n">QWidget</span> <span class="o">*</span><span class="n">parent</span><span class="p">);</span>
+</div><div class="line-15">	<span class="o">~</span><span class="n">QVolumeMeter</span><span class="p">();</span>
+</div><div class="line-16">	<span class="kt">float</span> <span class="n">levelMin</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</div><div class="line-17">	<span class="kt">float</span> <span class="n">levelMax</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</div><div class="line-18">	<span class="kt">float</span> <span class="n">level</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</div><div class="line-19">	
+</div><div class="line-20"><span class="k">public</span> <span class="n">slots</span><span class="o">:</span>
+</div><div class="line-21">	<span class="kt">void</span> <span class="n">setLevelMin</span><span class="p">(</span><span class="kt">float</span> <span class="n">min</span><span class="p">);</span>
+</div><div class="line-22">	<span class="kt">void</span> <span class="n">setLevelMax</span><span class="p">(</span><span class="kt">float</span> <span class="n">max</span><span class="p">);</span>
+</div><div class="line-23">	<span class="kt">void</span> <span class="n">setLevel</span><span class="p">(</span><span class="kt">float</span> <span class="n">lvl</span><span class="p">);</span>
+</div><div class="line-24">	<span class="kt">void</span> <span class="n">setPercent</span><span class="p">(</span><span class="kt">int</span> <span class="n">value</span><span class="p">);</span>
+</div><div class="line-25">	
+</div><div class="line-26"><span class="nl">protected:</span>
+</div><div class="line-27">	<span class="k">virtual</span> <span class="kt">void</span> <span class="n">paintEvent</span><span class="p">(</span><span class="n">QPaintEvent</span> <span class="o">*</span><span class="n">event</span><span class="p">);</span>
+</div><div class="line-28">	
+</div><div class="line-29"><span class="nl">private:</span>
+</div><div class="line-30">	<span class="n">QImage</span> <span class="o">*</span><span class="n">pTemplate</span><span class="p">;</span>
+</div><div class="line-31">	<span class="kt">float</span>   <span class="n">pLevel</span><span class="p">;</span>
+</div><div class="line-32">	<span class="kt">float</span>   <span class="n">pLevelMin</span><span class="p">;</span>
+</div><div class="line-33">	<span class="kt">float</span>   <span class="n">pLevelMax</span><span class="p">;</span>
+</div><div class="line-34">	
+</div><div class="line-35"><span class="p">};</span>
+</div><div class="line-36">
+</div><div class="line-37"><span class="kr">inline</span> <span class="kt">float</span> <span class="n">QVolumeMeter</span><span class="o">::</span><span class="n">levelMin</span><span class="p">()</span> <span class="k">const</span>
+</div><div class="line-38"><span class="p">{</span> <span class="k">return</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevelMin</span><span class="p">;</span> <span class="p">};</span>
+</div><div class="line-39">
+</div><div class="line-40"><span class="kr">inline</span> <span class="kt">float</span> <span class="n">QVolumeMeter</span><span class="o">::</span><span class="n">levelMax</span><span class="p">()</span> <span class="k">const</span>
+</div><div class="line-41"><span class="p">{</span> <span class="k">return</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevelMax</span><span class="p">;</span> <span class="p">};</span>
+</div><div class="line-42">
+</div><div class="line-43"><span class="kr">inline</span> <span class="kt">float</span> <span class="n">QVolumeMeter</span><span class="o">::</span><span class="n">level</span><span class="p">()</span> <span class="k">const</span>
+</div><div class="line-44"><span class="p">{</span> <span class="k">return</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevel</span><span class="p">;</span> <span class="p">};</span>
+</div><div class="line-45">
+</div><div class="line-46"><span class="kr">inline</span> <span class="kt">void</span> <span class="n">QVolumeMeter</span><span class="o">::</span><span class="n">setPercent</span><span class="p">(</span><span class="kt">int</span> <span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+</div><div class="line-47">  <span class="n">setLevel</span><span class="p">(</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevelMin</span> <span class="o">+</span> <span class="p">(</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevelMax</span> <span class="o">-</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevelMin</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="kt">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">/</span> <span class="mf">100.</span><span class="n">f</span><span class="p">));</span>	
+</div><div class="line-48"><span class="p">}</span>
+</div><div class="line-49">
+</div><div class="line-50"><span class="cp">#endif // QVOLUMEMETER_H</span>
+</div></code></pre></figure>
+
+<p>Und der Sourcecode der Klasse:</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><div class="line-1"><span class="cp">#include "qvolumemeter.h"</span>
+</div><div class="line-2"><span class="cp">#include &lt;QPainter&gt;</span>
+</div><div class="line-3">
+</div><div class="line-4"><span class="n">QVolumeMeter</span><span class="o">::</span><span class="n">QVolumeMeter</span><span class="p">(</span><span class="n">QWidget</span> <span class="o">*</span><span class="n">parent</span><span class="p">)</span>
+</div><div class="line-5">	<span class="o">:</span> <span class="n">QWidget</span><span class="p">(</span><span class="n">parent</span><span class="p">),</span> <span class="n">pTemplate</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">pLevel</span><span class="p">(</span><span class="mf">0.5</span><span class="n">f</span><span class="p">),</span> <span class="n">pLevelMin</span><span class="p">(</span><span class="mf">0.</span><span class="n">f</span><span class="p">),</span> <span class="n">pLevelMax</span><span class="p">(</span><span class="mf">1.</span><span class="n">f</span><span class="p">)</span>
+</div><div class="line-6"><span class="p">{</span>
+</div><div class="line-7">	<span class="k">this</span><span class="o">-&gt;</span><span class="n">pTemplate</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QImage</span><span class="p">(</span><span class="s">":/QTestExampleWidget/Resources/volumeMeter.png"</span><span class="p">);</span>
+</div><div class="line-8">	<span class="k">if</span> <span class="p">(</span><span class="n">pTemplate</span><span class="p">)</span>
+</div><div class="line-9">	<span class="p">{</span>
+</div><div class="line-10">		<span class="n">QSize</span> <span class="n">nsize</span><span class="p">(</span><span class="n">pTemplate</span><span class="o">-&gt;</span><span class="n">width</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">pTemplate</span><span class="o">-&gt;</span><span class="n">height</span><span class="p">());</span>
+</div><div class="line-11">		<span class="n">setMinimumSize</span><span class="p">(</span><span class="n">nsize</span><span class="p">);</span>
+</div><div class="line-12">		<span class="n">setMaximumSize</span><span class="p">(</span><span class="n">nsize</span><span class="p">);</span>
+</div><div class="line-13">	<span class="p">}</span>
+</div><div class="line-14"><span class="p">}</span>
+</div><div class="line-15">
+</div><div class="line-16"><span class="n">QVolumeMeter</span><span class="o">::~</span><span class="n">QVolumeMeter</span><span class="p">()</span>
+</div><div class="line-17"><span class="p">{</span>
+</div><div class="line-18">	<span class="k">delete</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">pTemplate</span><span class="p">;</span>
+</div><div class="line-19"><span class="p">}</span>
+</div><div class="line-20">
+</div><div class="line-21"><span class="kt">void</span> <span class="n">QVolumeMeter</span><span class="o">::</span><span class="n">setLevelMin</span><span class="p">(</span><span class="kt">float</span> <span class="n">min</span><span class="p">)</span>
+</div><div class="line-22"><span class="p">{</span> 
+</div><div class="line-23">	<span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevelMin</span><span class="o">=</span><span class="n">min</span><span class="p">;</span> 
+</div><div class="line-24">	<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevelMax</span><span class="o">&lt;</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevelMin</span><span class="p">)</span>
+</div><div class="line-25">		<span class="n">qSwap</span><span class="p">(</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevelMax</span><span class="p">,</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevelMin</span><span class="p">);</span>
+</div><div class="line-26">	<span class="k">this</span><span class="o">-&gt;</span><span class="n">update</span><span class="p">();</span> 
+</div><div class="line-27"><span class="p">};</span>
+</div><div class="line-28">
+</div><div class="line-29"><span class="kt">void</span> <span class="n">QVolumeMeter</span><span class="o">::</span><span class="n">setLevelMax</span><span class="p">(</span><span class="kt">float</span> <span class="n">max</span><span class="p">)</span>
+</div><div class="line-30"><span class="p">{</span> 
+</div><div class="line-31">	<span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevelMax</span><span class="o">=</span><span class="n">max</span><span class="p">;</span> 
+</div><div class="line-32">	<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevelMax</span><span class="o">&lt;</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevelMin</span><span class="p">)</span>
+</div><div class="line-33">		<span class="n">qSwap</span><span class="p">(</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevelMax</span><span class="p">,</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevelMin</span><span class="p">);</span>
+</div><div class="line-34">	<span class="k">this</span><span class="o">-&gt;</span><span class="n">update</span><span class="p">();</span> 
+</div><div class="line-35"><span class="p">};</span>
+</div><div class="line-36">
+</div><div class="line-37"><span class="kt">void</span> <span class="n">QVolumeMeter</span><span class="o">::</span><span class="n">setLevel</span><span class="p">(</span><span class="kt">float</span> <span class="n">lvl</span><span class="p">)</span>
+</div><div class="line-38"><span class="p">{</span> 
+</div><div class="line-39">	<span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevel</span><span class="o">=</span><span class="n">lvl</span><span class="p">;</span> 
+</div><div class="line-40">	<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevel</span><span class="o">&gt;</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevelMax</span><span class="p">)</span>
+</div><div class="line-41">		<span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevel</span><span class="o">=</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevelMax</span><span class="p">;</span>
+</div><div class="line-42">	<span class="k">else</span>
+</div><div class="line-43">	<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevel</span><span class="o">&lt;</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevelMin</span><span class="p">)</span>
+</div><div class="line-44">		<span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevel</span><span class="o">=</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevelMin</span><span class="p">;</span>
+</div><div class="line-45">	<span class="k">this</span><span class="o">-&gt;</span><span class="n">update</span><span class="p">();</span> 
+</div><div class="line-46"><span class="p">};</span>
+</div><div class="line-47">
+</div><div class="line-48"><span class="kt">void</span> <span class="n">QVolumeMeter</span><span class="o">::</span><span class="n">paintEvent</span><span class="p">(</span><span class="n">QPaintEvent</span> <span class="o">*</span><span class="n">event</span><span class="p">)</span>
+</div><div class="line-49"><span class="p">{</span>
+</div><div class="line-50">	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">pTemplate</span><span class="p">)</span>
+</div><div class="line-51">		<span class="k">return</span><span class="p">;</span>
+</div><div class="line-52">		
+</div><div class="line-53">	<span class="n">QPainter</span> <span class="n">painter</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+</div><div class="line-54">	<span class="n">painter</span><span class="p">.</span><span class="n">drawImage</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">*</span><span class="n">pTemplate</span><span class="p">,</span> <span class="n">width</span><span class="p">(),</span> <span class="mi">0</span><span class="p">);</span>
+</div><div class="line-55">	
+</div><div class="line-56">	<span class="kt">float</span> <span class="n">range</span> <span class="o">=</span> <span class="p">(</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevelMax</span> <span class="o">-</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevelMin</span><span class="p">);</span>
+</div><div class="line-57">	<span class="kt">float</span> <span class="n">pos</span> <span class="o">=</span> <span class="p">(</span><span class="n">range</span><span class="o">-</span><span class="p">(</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevel</span> <span class="o">-</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">pLevelMin</span><span class="p">)</span><span class="o">/</span><span class="n">range</span><span class="p">)</span><span class="o">*</span> <span class="kt">float</span><span class="p">(</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">height</span><span class="p">())</span> <span class="p">;</span>
+</div><div class="line-58">	<span class="n">QRect</span> <span class="n">rect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">width</span><span class="p">(),</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">height</span><span class="p">());</span>
+</div><div class="line-59">	<span class="n">painter</span><span class="p">.</span><span class="n">drawImage</span><span class="p">(</span><span class="n">rect</span><span class="p">,</span> <span class="o">*</span><span class="n">pTemplate</span><span class="p">,</span> <span class="n">rect</span><span class="p">);</span>
+</div><div class="line-60">	
+</div><div class="line-61">	<span class="n">painter</span><span class="p">.</span><span class="n">end</span><span class="p">();</span>
+</div><div class="line-62"><span class="p">}</span>
+</div></code></pre></figure>
+
+<p>Im Prinzip ist es also nicht sonderlich schwer sein eigenes Steuerelement zu erstellen.
+Wer möchte kann nun hingehen und für sich weitere event-Funktinen implementieren um zB.
+auf Mausklicks etc zu reagieren, siehe dazu auch QWidget Reference. Das Projekt bzw.
+den Source findet ihr wieder unter meinem github Account: <a href="https://github.com/veeman/QtCodeSnippets">QTestExampleWidget</a></p>
+
+<p>Schreibt mir doch für was Ihr euch ein eigenes Steuerelement geschrieben habt.</p>
+
+
+  </div>
+
+  <div>
+    <p style="float:left"><span class="share-box">Teilen:</span> <a href="http://twitter.com/share?text=Qt: Benutzer&shy;definiertes Widget&url=https://veeman.github.io/posts/2013/qt-customwidget/" target="_blank">Twitter</a>, <a href="https://www.facebook.com/sharer.php?u=https://veeman.github.io/posts/2013/qt-customwidget/" target="_blank">Facebook</a></p>
+	<p style="float:right"><span class="share-box">Kommentieren:</span> <a href="mailto:vitali_mast@gmx.net?subject=Qt: Benutzer&shy;definiertes Widget"><i class="svg-glyph cmail"></i></a> </p>
+	<div style="clear:both"></div>
+  </div>
+
+  <!--<div class="date">Written on February  2, 2013</div>-->
+
+  
+</article>
+
+        </div>
+      </div>
+
+      <div class="wrapper-footer">
+        <div class="container">
+          <footer class="footer">
+		    <div class="footer-links">
+			  <a href="/pages/imprint">Impressum</a> - 
+			  <a href="/pages/privacy">Datenschutzerklärung</a>
+			</div>
+		    <div>
+				
+<a href="mailto:vitali_mast@gmx.net"><i class="svg-icon email"></i></a>
+
+
+<a href="https://github.com/veeman"><i class="svg-icon github"></i></a>
+
+
+
+<a href="/feed.xml"><i class="svg-icon rss"></i></a>
+
+<a href="http://stackoverflow.com/users/5388805/veeman"><i class="svg-icon stackoverflow"></i></a>
+
+
+
+
+			</div>
+          </footer>
+        </div>
+      </div>
+    </div>
+
+    
+
+  </body>
+</html>

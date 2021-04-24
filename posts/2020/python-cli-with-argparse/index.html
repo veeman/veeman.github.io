@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Python: Kommandozeilen&shy;interpretation – veeman.github.io – Persöhnlicher Blog</title>
+    <!-- Begin Jekyll SEO tag v2.7.1 -->
+<meta name="generator" content="Jekyll v4.2.0" />
+<meta property="og:title" content="Python: Kommandozeilen­interpretation" />
+<meta name="author" content="Vitalij Mast" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Wer Python verwendet, der will früher oder später seine Anwendung in ein Kommandozeilen-Tool umwandeln um das Verhalten der Anwendung über unterschiedliche Parameter zu steuern. In diesem Artikel wird eine einfache HexDump Anwendung mit Kommandozeilenparameter erweitert. Verwendet wird Python in der Version 3." />
+<meta property="og:description" content="Wer Python verwendet, der will früher oder später seine Anwendung in ein Kommandozeilen-Tool umwandeln um das Verhalten der Anwendung über unterschiedliche Parameter zu steuern. In diesem Artikel wird eine einfache HexDump Anwendung mit Kommandozeilenparameter erweitert. Verwendet wird Python in der Version 3." />
+<link rel="canonical" href="https://veeman.github.io/posts/2020/python-cli-with-argparse/" />
+<meta property="og:url" content="https://veeman.github.io/posts/2020/python-cli-with-argparse/" />
+<meta property="og:site_name" content="veeman.github.io" />
+<meta property="og:image" content="https://veeman.github.io/images/2020-03-22-front-cli-argparse.gif" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-03-22T00:00:00+01:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://veeman.github.io/images/2020-03-22-front-cli-argparse.gif" />
+<meta property="twitter:title" content="Python: Kommandozeilen­interpretation" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","image":"https://veeman.github.io/images/2020-03-22-front-cli-argparse.gif","url":"https://veeman.github.io/posts/2020/python-cli-with-argparse/","headline":"Python: Kommandozeilen­interpretation","dateModified":"2020-03-22T00:00:00+01:00","datePublished":"2020-03-22T00:00:00+01:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://veeman.github.io/posts/2020/python-cli-with-argparse/"},"author":{"@type":"Person","name":"Vitalij Mast"},"description":"Wer Python verwendet, der will früher oder später seine Anwendung in ein Kommandozeilen-Tool umwandeln um das Verhalten der Anwendung über unterschiedliche Parameter zu steuern. In diesem Artikel wird eine einfache HexDump Anwendung mit Kommandozeilenparameter erweitert. Verwendet wird Python in der Version 3.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+
+
+
+
+<meta property="og:description" content="
+Wer Python verwendet, der will früher oder später seine Anwendung
+in ein Kommandozeilen-Tool umwandeln um das Verhalten der Anwendung über
+unterschiedliche Parameter zu steuern. In diesem Artikel wird eine einfache
+HexDump Anwendung mit Kommandozeilenparameter erweitert.
+Verwendet wird Python in der Version 3.
+" />
+
+<meta name="author" content="veeman.github.io" />
+
+
+<meta property="og:title" content="Python: Kommandozeilen&shy;interpretation" />
+<meta property="twitter:title" content="Python: Kommandozeilen&shy;interpretation" />
+
+
+
+<meta property="og:image" content="https://veeman.github.io/images/2020-03-22-front-cli-argparse.gif"/>
+<meta property="twitter:image" content="https://veeman.github.io/images/2020-03-22-front-cli-argparse.gif"/>
+
+
+
+    <link rel="stylesheet" type="text/css" href="/assets/style.css" />
+    <link rel="alternate" type="application/rss+xml" title="veeman.github.io - Persöhnlicher Blog" href="/feed.xml" />
+    <link rel="canonical" href="https://veeman.github.io/posts/2020/python-cli-with-argparse/" />
+
+    <meta name="theme-color" content="#000000">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    
+
+  </head>
+
+  <body>
+    <div class="wrapper-container">
+      <div class="wrapper-masthead">
+        <div class="container">
+          <header class="masthead clearfix">
+            <a href="/" class="site-avatar"><img src="/images/logo.png" alt="" /></a>
+
+            <div class="site-info">
+              <h1 class="site-name"><a href="/">veeman.github.io</a></h1>
+              <p class="site-description">Persöhnlicher Blog</p> 
+            </div>
+
+            <nav>
+              <a href="/">Blog</a>
+			  <a href="/pages/categories">Kategorien</a>
+              <a href="/pages/search">Suchen</a>
+            </nav>
+          </header>
+        </div>
+      </div>
+
+      <div class="wrapper-main">
+        <div id="main" role="main" class="container">
+          <article class="post detailed">
+  <h1>Python: Kommandozeilen&shy;interpretation</h1>
+
+  <div>
+    <p class="author_title">Vitalij Mast · 22 März 2020</p>
+    
+    <div class="post-tags">
+      
+      
+        <a href="/pages/categories/#python">python</a>
+        &nbsp;
+      
+        <a href="/pages/categories/#parse">parse</a>
+        &nbsp;
+      
+        <a href="/pages/categories/#cli">cli</a>
+        
+      
+    </div>
+  </div>
+    
+  <div class="entry">
+    <p><img src="/images/2020-03-22-front-cli-argparse.gif" alt="" style="float:right" />
+Wer Python verwendet, der will früher oder später seine Anwendung
+in ein Kommandozeilen-Tool umwandeln um das Verhalten der Anwendung über
+unterschiedliche Parameter zu steuern. In diesem Artikel wird eine einfache
+HexDump Anwendung mit Kommandozeilenparameter erweitert.
+Verwendet wird Python in der Version 3.</p>
+
+<p>Das folgende Listing zeigt eine HexDump Anwendung namens <strong>hexdump.py</strong>
+welche sich momentan einfach selbst in einer Hexadezimal Ansicht darstellt:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><div class="line-1"><span class="kn">import</span> <span class="nn">math</span>
+</div><div class="line-2">
+</div><div class="line-3"><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</div><div class="line-4">    <span class="c1"># options variables</span>
+</div><div class="line-5">    <span class="n">arg_file_name</span> <span class="o">=</span> <span class="s">"hexdump.py"</span>
+</div><div class="line-6">
+</div><div class="line-7">    <span class="n">arg_address_show</span> <span class="o">=</span> <span class="bp">True</span>
+</div><div class="line-8">    <span class="n">arg_address_length</span> <span class="o">=</span> <span class="mi">4</span>
+</div><div class="line-9">    <span class="n">arg_address_hex_prefix</span> <span class="o">=</span> <span class="s">"0x"</span>
+</div><div class="line-10">
+</div><div class="line-11">    <span class="n">arg_dump_column_count</span> <span class="o">=</span> <span class="mi">16</span>
+</div><div class="line-12">
+</div><div class="line-13">    <span class="n">arg_hex_dump_show</span> <span class="o">=</span> <span class="bp">True</span>
+</div><div class="line-14">    <span class="n">arg_ascii_dump_show</span> <span class="o">=</span> <span class="bp">True</span>
+</div><div class="line-15">
+</div><div class="line-16">    <span class="c1"># load file data</span>
+</div><div class="line-17">    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">arg_file_name</span><span class="p">,</span> <span class="s">"rb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
+</div><div class="line-18">        <span class="n">raw_data</span> <span class="o">=</span> <span class="n">fd</span><span class="p">.</span><span class="n">read</span><span class="p">()</span>
+</div><div class="line-19">
+</div><div class="line-20">    <span class="c1"># support variables</span>
+</div><div class="line-21">    <span class="n">printable</span> <span class="o">=</span> <span class="s">"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!</span><span class="se">\"</span><span class="s">#$%&amp;amp;</span><span class="se">\'</span><span class="s">()*+,-./:;&amp;lt;=&amp;gt;?@[</span><span class="se">\\</span><span class="s">]^_`{|}~"</span>
+</div><div class="line-22">    <span class="n">out_address_fill</span> <span class="o">=</span> <span class="mi">0</span>
+</div><div class="line-23">    <span class="n">out_data_hex_fill</span> <span class="o">=</span> <span class="mi">0</span>
+</div><div class="line-24">
+</div><div class="line-25">    <span class="c1"># pre process argument variables</span>
+</div><div class="line-26">    <span class="k">if</span> <span class="n">arg_address_length</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+</div><div class="line-27">        <span class="n">arg_address_length</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="p">.</span><span class="n">log</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">raw_data</span><span class="p">),</span> <span class="mi">256</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span>
+</div><div class="line-28">
+</div><div class="line-29">    <span class="k">if</span> <span class="n">arg_address_show</span><span class="p">:</span>
+</div><div class="line-30">        <span class="n">out_address_fill</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">arg_address_hex_prefix</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">arg_address_length</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+</div><div class="line-31">
+</div><div class="line-32">    <span class="k">if</span> <span class="n">arg_dump_column_count</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+</div><div class="line-33">        <span class="n">arg_dump_column_count</span> <span class="o">=</span> <span class="mi">1</span>
+</div><div class="line-34">
+</div><div class="line-35">    <span class="k">if</span> <span class="n">arg_hex_dump_show</span><span class="p">:</span>
+</div><div class="line-36">        <span class="n">out_data_hex_fill</span> <span class="o">=</span> <span class="n">arg_dump_column_count</span> <span class="o">*</span> <span class="mi">3</span>
+</div><div class="line-37">
+</div><div class="line-38">    <span class="k">print</span><span class="p">(</span><span class="s">"Hex view of file '%s' with size %d byte(s).</span><span class="se">\n</span><span class="s">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">arg_file_name</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">raw_data</span><span class="p">)))</span>
+</div><div class="line-39">
+</div><div class="line-40">    <span class="c1"># process, format and print data</span>
+</div><div class="line-41">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">raw_data</span><span class="p">),</span> <span class="n">arg_dump_column_count</span><span class="p">):</span>
+</div><div class="line-42">        <span class="n">out_address</span> <span class="o">=</span> <span class="n">out_data_hex</span> <span class="o">=</span> <span class="n">out_data_chr</span> <span class="o">=</span> <span class="s">""</span>
+</div><div class="line-43">
+</div><div class="line-44">        <span class="k">if</span> <span class="n">arg_address_show</span><span class="p">:</span>
+</div><div class="line-45">            <span class="n">out_address</span> <span class="o">=</span> <span class="s">"%s%0*X"</span> <span class="o">%</span> <span class="p">(</span><span class="n">arg_address_hex_prefix</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">arg_address_length</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+</div><div class="line-46">
+</div><div class="line-47">        <span class="k">if</span> <span class="n">arg_hex_dump_show</span><span class="p">:</span>
+</div><div class="line-48">            <span class="n">out_data_hex</span> <span class="o">=</span> <span class="s">" "</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="s">"%02x"</span> <span class="o">%</span> <span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">raw_data</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="n">arg_dump_column_count</span><span class="p">])</span>
+</div><div class="line-49">
+</div><div class="line-50">        <span class="k">if</span> <span class="n">arg_ascii_dump_show</span><span class="p">:</span>
+</div><div class="line-51">            <span class="n">out_data_chr</span> <span class="o">=</span> <span class="s">""</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">if</span> <span class="nb">chr</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="ow">in</span> <span class="n">printable</span> <span class="k">else</span> <span class="s">"."</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">raw_data</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="n">arg_dump_column_count</span><span class="p">])</span>
+</div><div class="line-52">
+</div><div class="line-53">        <span class="k">print</span><span class="p">(</span><span class="s">"%- *s%- *s%s"</span> <span class="o">%</span> <span class="p">(</span><span class="n">out_address_fill</span><span class="p">,</span> <span class="n">out_address</span><span class="p">,</span> <span class="n">out_data_hex_fill</span><span class="p">,</span> <span class="n">out_data_hex</span><span class="p">,</span> <span class="n">out_data_chr</span><span class="p">))</span>
+</div><div class="line-54">
+</div><div class="line-55">
+</div><div class="line-56"><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+</div><div class="line-57">    <span class="n">main</span><span class="p">()</span>
+</div></code></pre></figure>
+
+<p>Hierbei finden sich bereits vorbereitete Variablen mit dem Prefix <code class="language-plaintext highlighter-rouge">arg_</code>. 
+Diese sollen über die Kommandozeilen befüllt werden.
+Python bringt hierfür eine Bibliothek namens <a href="https://docs.python.org/3/library/argparse.html">argparse</a> mit.</p>
+
+<p>Als Implementierungsbeispiel soll das folgende Listing dienen:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><div class="line-1"><span class="kn">import</span> <span class="nn">math</span>
+</div><div class="line-2"><span class="kn">import</span> <span class="nn">argparse</span>
+</div><div class="line-3">
+</div><div class="line-4"><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</div><div class="line-5">	<span class="c1"># create parser instance</span>
+</div><div class="line-6">    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="p">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s">'Python Hexdump'</span><span class="p">,</span>
+</div><div class="line-7">                                     <span class="n">formatter_class</span><span class="o">=</span><span class="n">argparse</span><span class="p">.</span><span class="n">RawTextHelpFormatter</span><span class="p">)</span>
+</div><div class="line-8">
+</div><div class="line-9">	<span class="c1"># remove default action group</span>
+</div><div class="line-10">    <span class="n">parser</span><span class="p">.</span><span class="n">_action_groups</span><span class="p">.</span><span class="n">pop</span><span class="p">()</span>
+</div><div class="line-11">	
+</div><div class="line-12">	<span class="c1"># create custom action groups and assing argument informations</span>
+</div><div class="line-13">    <span class="n">required</span> <span class="o">=</span> <span class="n">parser</span><span class="p">.</span><span class="n">add_argument_group</span><span class="p">(</span><span class="s">'required arguments'</span><span class="p">)</span>
+</div><div class="line-14">    <span class="n">required</span><span class="p">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">"-i"</span><span class="p">,</span> <span class="s">"--input"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+</div><div class="line-15">                          <span class="n">help</span><span class="o">=</span><span class="s">"Input file to show hexadecimal content for."</span><span class="p">)</span>
+</div><div class="line-16">						  
+</div><div class="line-17">    <span class="n">optional</span> <span class="o">=</span> <span class="n">parser</span><span class="p">.</span><span class="n">add_argument_group</span><span class="p">(</span><span class="s">'optional arguments'</span><span class="p">)</span>
+</div><div class="line-18">    <span class="n">optional</span><span class="p">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">"-w"</span><span class="p">,</span> <span class="s">"--width"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+</div><div class="line-19">                          <span class="n">help</span><span class="o">=</span><span class="s">"Address display width in bytes.</span><span class="se">\n</span><span class="s">Default is 4."</span><span class="p">)</span>
+</div><div class="line-20">    <span class="n">optional</span><span class="p">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">"-p"</span><span class="p">,</span> <span class="s">"--prefix"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">"0x"</span><span class="p">,</span>
+</div><div class="line-21">                          <span class="n">help</span><span class="o">=</span><span class="s">"Address prefix.</span><span class="se">\n</span><span class="s">Default is '0x'."</span><span class="p">)</span>
+</div><div class="line-22">    <span class="n">optional</span><span class="p">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">"-n"</span><span class="p">,</span> <span class="s">"--noaddress"</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">"store_true"</span><span class="p">,</span>
+</div><div class="line-23">                          <span class="n">help</span><span class="o">=</span><span class="s">"Do not show any addresses."</span><span class="p">)</span>
+</div><div class="line-24">    <span class="n">optional</span><span class="p">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">"-c"</span><span class="p">,</span> <span class="s">"--columns"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+</div><div class="line-25">                          <span class="n">help</span><span class="o">=</span><span class="s">"Number of columns to show per row."</span><span class="p">)</span>
+</div><div class="line-26">	
+</div><div class="line-27">	<span class="c1"># parse input arguments	</span>
+</div><div class="line-28">    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="p">.</span><span class="n">parse_args</span><span class="p">()</span>
+</div><div class="line-29">
+</div><div class="line-30">    <span class="c1"># options variables</span>
+</div><div class="line-31">    <span class="n">arg_file_name</span> <span class="o">=</span> <span class="n">args</span><span class="p">.</span><span class="nb">input</span>
+</div><div class="line-32">
+</div><div class="line-33">    <span class="n">arg_address_show</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">args</span><span class="p">.</span><span class="n">noaddress</span>
+</div><div class="line-34">    <span class="n">arg_address_length</span> <span class="o">=</span> <span class="n">args</span><span class="p">.</span><span class="n">width</span>
+</div><div class="line-35">    <span class="n">arg_address_hex_prefix</span> <span class="o">=</span> <span class="n">args</span><span class="p">.</span><span class="n">prefix</span>
+</div><div class="line-36">
+</div><div class="line-37">    <span class="n">arg_dump_column_count</span> <span class="o">=</span> <span class="n">args</span><span class="p">.</span><span class="n">columns</span>
+</div><div class="line-38">	
+</div><div class="line-39">	<span class="c1"># ...</span>
+</div></code></pre></figure>
+
+<p>Hier wird zunächst eine <code class="language-plaintext highlighter-rouge">ArgumentParser</code> Instanz erstellt (Zeile 6) und 
+die Standardgruppe entfernt (Zeile 10). Persöhnlich mag ich es nicht 
+wenn die Standardgruppe mit dem Hilfstext für die Hilfe angezeigt wird.</p>
+
+<p>Die <code class="language-plaintext highlighter-rouge">ArgumentParser</code> Klasse bietet die Möglichkeit Parametergruppen 
+zu erstellen welche, wenn das Programm mit dem Argument <code class="language-plaintext highlighter-rouge">-h</code> Aufgerufen wird,
+alle Befehlsbeschreibungen mit entsprechenden Befehlsgruppenüberschriften
+versieht und deren Hilfetexte ausgibt.</p>
+
+<p>Weiterführend werden zwei Gruppen angelegt mit <em>benötigten</em> (Zeile 13..15) sowie
+<em>optionalen</em> Argumenten (Zeile 17..25) angelegt und schliesslich in Zeile 28 
+verarbeitet. Die Klasse nimmt sich dabei die Eingabeargument von der Befehlszeile.</p>
+
+<p>Interessanterweise erhält man im Erfolgsfall eine Instanz mit Eigenschaften 
+und Werten zurück bei dennen die Eigenschaften die Bezeichner der bei
+der Argumentdefinition übergebenen zweiten Parameter annehmen. 
+So wird zum Beisüpiel aus <code style="white-space: nowrap" class="language-plaintext highlighter-rouge">"--width"</code> » <code class="language-plaintext highlighter-rouge">args.width</code>.</p>
+
+<p>Diese Tatsache wird in Zeile 31 bis 37 genutzt um die vorherigen Konstantendefinitionen 
+mit Benutzerwerten zu füllen.</p>
+
+<p>Die obige Implementierung erzeugt, wenn mit <code class="language-plaintext highlighter-rouge">hexdump.py -h</code> aufgerufen, die folgende Aussgabe:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>usage: hexdump.py [-h] -i INPUT [-w WIDTH] [-p PREFIX] [-n] [-c COLUMNS]
+
+Python Hexdump
+
+required arguments:
+  -i INPUT, --input INPUT
+                        Input file to show hexadecimal content for.
+
+optional arguments:
+  -w WIDTH, --width WIDTH
+                        Address display width in bytes.
+                        Default is 4.
+  -p PREFIX, --prefix PREFIX
+                        Address prefix.
+                        Default is '0x'.
+  -n, --noaddress       Do not show any addresses.
+  -c COLUMNS, --columns COLUMNS
+                        Number of columns to show per row.
+</code></pre></div></div>
+
+<p>Bei einer fehlerhaften eingabe wie <code class="language-plaintext highlighter-rouge">hexdump.py -o test</code> wird 
+eine entsprechende Fehlernachricht generiert:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>usage: hexdump.py [-h] -i INPUT [-w WIDTH] [-p PREFIX] [-n] [-c COLUMNS]
+hexdump.py: error: unrecognized arguments: -o xyz
+</code></pre></div></div>
+
+<p>Dem aufmerksamen Leser ist nun sicherlich aufgefallen das die Felder 
+<code class="language-plaintext highlighter-rouge">arg_hex_dump_show</code> und <code class="language-plaintext highlighter-rouge">arg_ascii_dump_show</code> noch gar nicht abgedeckt sind.</p>
+
+<p>Hierfür habe ich mir etwas spezieles überlegt, da es keinen Sinn macht 
+weder die HEX noch die ASCII anzuzeigen erlaube ich nur eine von beiden 
+oder beide aber nicht keine. Hierfür bietet sich ein Enumdefinition an:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><div class="line-1"><span class="kn">import</span> <span class="nn">enum</span>
+</div><div class="line-2">
+</div><div class="line-3"><span class="k">class</span> <span class="nc">HexViewTypeEnum</span><span class="p">(</span><span class="n">enum</span><span class="p">.</span><span class="n">IntEnum</span><span class="p">):</span>
+</div><div class="line-4">    <span class="n">BOTH</span> <span class="o">=</span> <span class="mi">1</span>
+</div><div class="line-5">    <span class="n">HEX</span> <span class="o">=</span> <span class="mi">2</span>
+</div><div class="line-6">    <span class="n">ASCII</span> <span class="o">=</span> <span class="mi">3</span>
+</div><div class="line-7">
+</div><div class="line-8">    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</div><div class="line-9">        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">name</span><span class="p">.</span><span class="n">lower</span><span class="p">()</span>
+</div><div class="line-10">
+</div><div class="line-11">    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</div><div class="line-12">        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div><div class="line-13">
+</div><div class="line-14">    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</div><div class="line-15">        <span class="k">try</span><span class="p">:</span>
+</div><div class="line-16">            <span class="k">return</span> <span class="n">HexViewTypeEnum</span><span class="p">[</span><span class="bp">self</span><span class="p">.</span><span class="n">upper</span><span class="p">()]</span>
+</div><div class="line-17">        <span class="k">except</span> <span class="nb">KeyError</span><span class="p">:</span>
+</div><div class="line-18">            <span class="k">return</span> <span class="bp">self</span>
+</div></code></pre></figure>
+
+<p>Diese Klasse kann dann als Argumentationdefinition für <code class="language-plaintext highlighter-rouge">argparse</code> verwendet werden, sodass die 
+Werte <code class="language-plaintext highlighter-rouge">both</code>, <code class="language-plaintext highlighter-rouge">hex</code> und <code class="language-plaintext highlighter-rouge">ascii</code> als Eingabeparameter für das Argument <code class="language-plaintext highlighter-rouge">-v</code> akzeptiert werden.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><div class="line-1">    <span class="n">optional</span><span class="p">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">"-v"</span><span class="p">,</span> <span class="s">"--view"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">HexViewTypeEnum</span><span class="p">.</span><span class="n">__call__</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">HexViewTypeEnum</span><span class="p">.</span><span class="n">BOTH</span><span class="p">,</span>
+</div><div class="line-2">                          <span class="n">choices</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">HexViewTypeEnum</span><span class="p">),</span>
+</div><div class="line-3">                          <span class="n">help</span><span class="o">=</span><span class="s">"Hex and or Ascii view type to show."</span><span class="p">)</span>
+</div><div class="line-4">	<span class="c1"># ...</span>
+</div><div class="line-5">    <span class="n">arg_hex_dump_show</span> <span class="o">=</span> <span class="p">(</span><span class="n">args</span><span class="p">.</span><span class="n">view</span> <span class="o">!=</span> <span class="n">HexViewTypeEnum</span><span class="p">.</span><span class="n">ASCII</span><span class="p">)</span>
+</div><div class="line-6">    <span class="n">arg_ascii_dump_show</span> <span class="o">=</span> <span class="p">(</span><span class="n">args</span><span class="p">.</span><span class="n">view</span> <span class="o">!=</span> <span class="n">HexViewTypeEnum</span><span class="p">.</span><span class="n">HEX</span><span class="p">)</span>
+</div></code></pre></figure>
+
+<p>Ein Aufruf von <code class="language-plaintext highlighter-rouge">hexdump.py -i hexdump.py -w 8 -c 8 -p $ -v hex</code> solte zur folgende Ausgabe führen:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Hex view of file 'hexdump.py' with size 3585 byte(s).
+
+$0000000000000000 69 6d 70 6f 72 74 20 6d 
+$0000000000000008 61 74 68 0d 0a 69 6d 70 
+$0000000000000010 6f 72 74 20 65 6e 75 6d 
+$0000000000000018 0d 0a 69 6d 70 6f 72 74 
+$0000000000000020 20 61 72 67 70 61 72 73 
+$0000000000000028 65 0d 0a 0d 0a 0d 0a 63 
+$0000000000000030 6c 61 73 73 20 48 65 78 
+$0000000000000038 56 69 65 77 54 79 70 65 
+$0000000000000040 45 6e 75 6d 28 65 6e 75 
+$0000000000000048 6d 2e 49 6e 74 45 6e 75 
+$0000000000000050 6d 29 3a 0d 0a 20 20 20 
+</code></pre></div></div>
+
+<p>Damit ist dies nun auch das Ende dieses Artikels. Ich hoffe diese kurze Anleitung konnte
+einen Einblick in die Benutzung und Handhabung von <a href="https://docs.python.org/3/library/argparse.html">argparse</a> geben.</p>
+
+
+  </div>
+
+  <div>
+    <p style="float:left"><span class="share-box">Teilen:</span> <a href="http://twitter.com/share?text=Python: Kommandozeilen&shy;interpretation&url=https://veeman.github.io/posts/2020/python-cli-with-argparse/" target="_blank">Twitter</a>, <a href="https://www.facebook.com/sharer.php?u=https://veeman.github.io/posts/2020/python-cli-with-argparse/" target="_blank">Facebook</a></p>
+	<p style="float:right"><span class="share-box">Kommentieren:</span> <a href="mailto:vitali_mast@gmx.net?subject=Python: Kommandozeilen&shy;interpretation"><i class="svg-glyph cmail"></i></a> </p>
+	<div style="clear:both"></div>
+  </div>
+
+  <!--<div class="date">Written on March 22, 2020</div>-->
+
+  
+</article>
+
+        </div>
+      </div>
+
+      <div class="wrapper-footer">
+        <div class="container">
+          <footer class="footer">
+		    <div class="footer-links">
+			  <a href="/pages/imprint">Impressum</a> - 
+			  <a href="/pages/privacy">Datenschutzerklärung</a>
+			</div>
+		    <div>
+				
+<a href="mailto:vitali_mast@gmx.net"><i class="svg-icon email"></i></a>
+
+
+<a href="https://github.com/veeman"><i class="svg-icon github"></i></a>
+
+
+
+<a href="/feed.xml"><i class="svg-icon rss"></i></a>
+
+<a href="http://stackoverflow.com/users/5388805/veeman"><i class="svg-icon stackoverflow"></i></a>
+
+
+
+
+			</div>
+          </footer>
+        </div>
+      </div>
+    </div>
+
+    
+
+  </body>
+</html>

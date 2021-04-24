@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Platinenbelichter im Selbstbau – veeman.github.io – Persöhnlicher Blog</title>
+    <!-- Begin Jekyll SEO tag v2.7.1 -->
+<meta name="generator" content="Jekyll v4.2.0" />
+<meta property="og:title" content="Platinenbelichter im Selbstbau" />
+<meta name="author" content="Vitalij Mast" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Ich habe einmal ein älteres Projekt von mir ausgekramt. Es handelt sich hierbei um ein UV-Belichtungsgerät für fotobeschichtete Platine. Im Internet findet man schon sehr viele solcher Projekt, dennoch möchte ich meins hier auch vorstellen, da ich finde, dass dieses relativ gut geworden ist. Ausgangspunkt war ein Gesichtsbräuner mit 6x 15W UV-Röhren welchen ich für ca. 15 Euro bei ebay besorgt habe. Man könnte natürlich auch UV-LEDs nehmen jedoch fand ich den Arbeitsaufwand mit diesen einfach zu hoch. Um die Leistung schalten zu können wurde ein kleines Finder-Print-Relais verwendet. Die Steuerung von dem Belichter übernimmt ein AVR Mikrocontroller welcher mit 6 Tasten, diese sind unter einer Mosgummischicht versteckt, bedient wird und die Einstellungen auf einem 16×2 Display ausgibt." />
+<meta property="og:description" content="Ich habe einmal ein älteres Projekt von mir ausgekramt. Es handelt sich hierbei um ein UV-Belichtungsgerät für fotobeschichtete Platine. Im Internet findet man schon sehr viele solcher Projekt, dennoch möchte ich meins hier auch vorstellen, da ich finde, dass dieses relativ gut geworden ist. Ausgangspunkt war ein Gesichtsbräuner mit 6x 15W UV-Röhren welchen ich für ca. 15 Euro bei ebay besorgt habe. Man könnte natürlich auch UV-LEDs nehmen jedoch fand ich den Arbeitsaufwand mit diesen einfach zu hoch. Um die Leistung schalten zu können wurde ein kleines Finder-Print-Relais verwendet. Die Steuerung von dem Belichter übernimmt ein AVR Mikrocontroller welcher mit 6 Tasten, diese sind unter einer Mosgummischicht versteckt, bedient wird und die Einstellungen auf einem 16×2 Display ausgibt." />
+<link rel="canonical" href="https://veeman.github.io/posts/2012/pcp-exposure-system-diy/" />
+<meta property="og:url" content="https://veeman.github.io/posts/2012/pcp-exposure-system-diy/" />
+<meta property="og:site_name" content="veeman.github.io" />
+<meta property="og:image" content="https://veeman.github.io/images/2012-10-22-front.jpg" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2012-10-22T00:00:00+02:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://veeman.github.io/images/2012-10-22-front.jpg" />
+<meta property="twitter:title" content="Platinenbelichter im Selbstbau" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","image":"https://veeman.github.io/images/2012-10-22-front.jpg","url":"https://veeman.github.io/posts/2012/pcp-exposure-system-diy/","headline":"Platinenbelichter im Selbstbau","dateModified":"2012-10-22T00:00:00+02:00","datePublished":"2012-10-22T00:00:00+02:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://veeman.github.io/posts/2012/pcp-exposure-system-diy/"},"author":{"@type":"Person","name":"Vitalij Mast"},"description":"Ich habe einmal ein älteres Projekt von mir ausgekramt. Es handelt sich hierbei um ein UV-Belichtungsgerät für fotobeschichtete Platine. Im Internet findet man schon sehr viele solcher Projekt, dennoch möchte ich meins hier auch vorstellen, da ich finde, dass dieses relativ gut geworden ist. Ausgangspunkt war ein Gesichtsbräuner mit 6x 15W UV-Röhren welchen ich für ca. 15 Euro bei ebay besorgt habe. Man könnte natürlich auch UV-LEDs nehmen jedoch fand ich den Arbeitsaufwand mit diesen einfach zu hoch. Um die Leistung schalten zu können wurde ein kleines Finder-Print-Relais verwendet. Die Steuerung von dem Belichter übernimmt ein AVR Mikrocontroller welcher mit 6 Tasten, diese sind unter einer Mosgummischicht versteckt, bedient wird und die Einstellungen auf einem 16×2 Display ausgibt.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+
+
+
+
+<meta property="og:description" content="
+
+
+Ich habe einmal ein älteres Projekt von mir ausgekramt. Es handelt sich hierbei um ein UV-Belichtungsgerät 
+für fotobeschichtete Platine. Im Internet findet man schon sehr viele solcher Projekt, dennoch möchte ich
+meins hier auch vorstellen, da ich finde, dass dieses relativ gut geworden ist. Ausgangspunkt war ein
+Gesichtsbräuner mit 6x 15W UV-Röhren welchen ich für ca. 15 Euro bei ebay besorgt habe. Man könnte 
+natürlich auch UV-LEDs nehmen jedoch fand ich den Arbeitsaufwand mit diesen einfach zu hoch.
+Um die Leistung schalten zu können wurde ein kleines Finder-Print-Relais verwendet. Die Steuerung 
+von dem Belichter übernimmt ein AVR Mikrocontroller welcher mit 6 Tasten, diese sind unter einer 
+Mosgummischicht versteckt, bedient wird und die Einstellungen auf einem 16×2 Display ausgibt.
+
+" />
+
+<meta name="author" content="veeman.github.io" />
+
+
+<meta property="og:title" content="Platinenbelichter im Selbstbau" />
+<meta property="twitter:title" content="Platinenbelichter im Selbstbau" />
+
+
+
+<meta property="og:image" content="https://veeman.github.io/images/2012-10-22-front.jpg"/>
+<meta property="twitter:image" content="https://veeman.github.io/images/2012-10-22-front.jpg"/>
+
+
+
+    <link rel="stylesheet" type="text/css" href="/assets/style.css" />
+    <link rel="alternate" type="application/rss+xml" title="veeman.github.io - Persöhnlicher Blog" href="/feed.xml" />
+    <link rel="canonical" href="https://veeman.github.io/posts/2012/pcp-exposure-system-diy/" />
+
+    <meta name="theme-color" content="#000000">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    
+
+  </head>
+
+  <body>
+    <div class="wrapper-container">
+      <div class="wrapper-masthead">
+        <div class="container">
+          <header class="masthead clearfix">
+            <a href="/" class="site-avatar"><img src="/images/logo.png" alt="" /></a>
+
+            <div class="site-info">
+              <h1 class="site-name"><a href="/">veeman.github.io</a></h1>
+              <p class="site-description">Persöhnlicher Blog</p> 
+            </div>
+
+            <nav>
+              <a href="/">Blog</a>
+			  <a href="/pages/categories">Kategorien</a>
+              <a href="/pages/search">Suchen</a>
+            </nav>
+          </header>
+        </div>
+      </div>
+
+      <div class="wrapper-main">
+        <div id="main" role="main" class="container">
+          <article class="post detailed">
+  <h1>Platinenbelichter im Selbstbau</h1>
+
+  <div>
+    <p class="author_title">Vitalij Mast · 22 Oktober 2012</p>
+    
+    <div class="post-tags">
+      
+      
+        <a href="/pages/categories/#c/++">c/++</a>
+        &nbsp;
+      
+        <a href="/pages/categories/#project">project</a>
+        &nbsp;
+      
+        <a href="/pages/categories/#uc">uc</a>
+        
+      
+    </div>
+  </div>
+    
+  <div class="entry">
+    
+<p><img src="/images/2012-10-22-exposure-system-main.jpg" alt="" style="max-height:500px;float:right" /></p>
+
+<p>Ich habe einmal ein älteres Projekt von mir ausgekramt. Es handelt sich hierbei um ein UV-Belichtungsgerät 
+für fotobeschichtete Platine. Im Internet findet man schon sehr viele solcher Projekt, dennoch möchte ich
+meins hier auch vorstellen, da ich finde, dass dieses relativ gut geworden ist. Ausgangspunkt war ein
+Gesichtsbräuner mit 6x 15W UV-Röhren welchen ich für ca. 15 Euro bei ebay besorgt habe. Man könnte 
+natürlich auch UV-LEDs nehmen jedoch fand ich den Arbeitsaufwand mit diesen einfach zu hoch.
+Um die Leistung schalten zu können wurde ein kleines <a href="https://www.findernet.com/de">Finder-Print-Relais</a> verwendet. Die Steuerung 
+von dem Belichter übernimmt ein AVR Mikrocontroller welcher mit 6 Tasten, diese sind unter einer 
+Mosgummischicht versteckt, bedient wird und die Einstellungen auf einem 16×2 Display ausgibt.</p>
+
+<p>Weiter Unten findet ihr eine Kurze Beschreibung zum Schaltplan und weitere Bilder. Wenn jemand
+den Belichter nachbauen möchte dann seit Bitte vorsichtig mit der Netzspannung.</p>
+
+<h3 style="clear:both" id="features">Features</h3>
+
+<ul>
+  <li>Einstellbare Zeit: 30s .. 99:59min</li>
+  <li>Mehrere Zeitangaben möglich</li>
+  <li>Zeit Speicherbar im EEPROM</li>
+  <li>Verwendung eines Ringpuffers zur Schonung des EEPROMs</li>
+</ul>
+
+<h3 id="schaltplan">Schaltplan</h3>
+
+<p class="alert alert-danger"><strong>Achtung Hochspannung! Lebensgefahr</strong>
+<br />
+Die nachfolgende Schaltunge arbeiten mit Netzspannung und sollten nur von Erfahrenen 
+Leuten verwendet werden. Benutzung auf eigene Gefahr.</p>
+
+<p><img src="/images/2012-10-22-exposure-system-circuit.jpg" alt="" /></p>
+
+<p>Der Schaltplan besteht aus zwei Bereichen, einmal der Hauptplatine und einmal der Tastenplatine.
+Auf der Tastenplatine befinden sich nur 6 Taster (Steuerkreuz, Ok, Zurück) und 2 LEDs (Betriebszustand). 
+Auf der Hauptplatine befindet sich ein Trafo mit welchem eine Spannung von 5V für den ATmega88,
+das Display und das Relais generiert wird. Das Relais wird zum Schutz des Mikrocontrollers über 
+einen MOSFET angesteuert. Im Prinzip ist die Schaltung also ganz einfach gehalten.</p>
+
+<h3 id="download">Download</h3>
+
+<p>Den Schaltplan, das Layout sowie den Source-Code findet ihr hier: <a href="https://github.com/veeman/pcbExposureSystem">pcbExposureSystem</a>.</p>
+
+<h3 id="weitere-bilder">Weitere Bilder</h3>
+
+<p><img src="/images/2012-10-22-exposure-system-pv1.jpg" alt="" /><br />
+<img src="/images/2012-10-22-exposure-system-pv2.jpg" alt="" /><br />
+<img src="/images/2012-10-22-exposure-system-pv3.jpg" alt="" /><br />
+<img src="/images/2012-10-22-exposure-system-pv4.jpg" alt="" /><br />
+<img src="/images/2012-10-22-exposure-system-pv5.jpg" alt="" /></p>
+
+
+  </div>
+
+  <div>
+    <p style="float:left"><span class="share-box">Teilen:</span> <a href="http://twitter.com/share?text=Platinenbelichter im Selbstbau&url=https://veeman.github.io/posts/2012/pcp-exposure-system-diy/" target="_blank">Twitter</a>, <a href="https://www.facebook.com/sharer.php?u=https://veeman.github.io/posts/2012/pcp-exposure-system-diy/" target="_blank">Facebook</a></p>
+	<p style="float:right"><span class="share-box">Kommentieren:</span> <a href="mailto:vitali_mast@gmx.net?subject=Platinenbelichter im Selbstbau"><i class="svg-glyph cmail"></i></a> </p>
+	<div style="clear:both"></div>
+  </div>
+
+  <!--<div class="date">Written on October 22, 2012</div>-->
+
+  
+</article>
+
+        </div>
+      </div>
+
+      <div class="wrapper-footer">
+        <div class="container">
+          <footer class="footer">
+		    <div class="footer-links">
+			  <a href="/pages/imprint">Impressum</a> - 
+			  <a href="/pages/privacy">Datenschutzerklärung</a>
+			</div>
+		    <div>
+				
+<a href="mailto:vitali_mast@gmx.net"><i class="svg-icon email"></i></a>
+
+
+<a href="https://github.com/veeman"><i class="svg-icon github"></i></a>
+
+
+
+<a href="/feed.xml"><i class="svg-icon rss"></i></a>
+
+<a href="http://stackoverflow.com/users/5388805/veeman"><i class="svg-icon stackoverflow"></i></a>
+
+
+
+
+			</div>
+          </footer>
+        </div>
+      </div>
+    </div>
+
+    
+
+  </body>
+</html>

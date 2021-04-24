@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Sokoslide Game - Contest – veeman.github.io – Persöhnlicher Blog</title>
+    <!-- Begin Jekyll SEO tag v2.7.1 -->
+<meta name="generator" content="Jekyll v4.2.0" />
+<meta property="og:title" content="Sokoslide Game - Contest" />
+<meta name="author" content="Vitalij Mast" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Im Forum spiele­programmierer.de läuft zur Zeit ein Programmier-Contest in dem es gilt ein kleines Spiel Namens Sokoslide mit diversen Algorithmen so schnell wie möglich lösen zu lassen. Genaueres findet ihr in dem dazugehörigen Thread hier. Ich persönlich werde mich wahrscheinlich nicht mehr mit einer Implementierung, unter anderem da die Veranstaltung nur noch bis zum 3.3 läuft, eines Löse-System beschäftigen. Was ich jedoch mit diesem Beitrag vorstellen möchte, ist ein Programm welches ich bezüglich obigen Anlasses erstellt habe, mit welchem man Maps für das erwähnte Spiel erstellen und auch spielen kann." />
+<meta property="og:description" content="Im Forum spiele­programmierer.de läuft zur Zeit ein Programmier-Contest in dem es gilt ein kleines Spiel Namens Sokoslide mit diversen Algorithmen so schnell wie möglich lösen zu lassen. Genaueres findet ihr in dem dazugehörigen Thread hier. Ich persönlich werde mich wahrscheinlich nicht mehr mit einer Implementierung, unter anderem da die Veranstaltung nur noch bis zum 3.3 läuft, eines Löse-System beschäftigen. Was ich jedoch mit diesem Beitrag vorstellen möchte, ist ein Programm welches ich bezüglich obigen Anlasses erstellt habe, mit welchem man Maps für das erwähnte Spiel erstellen und auch spielen kann." />
+<link rel="canonical" href="https://veeman.github.io/posts/2013/sokoslide-contest/" />
+<meta property="og:url" content="https://veeman.github.io/posts/2013/sokoslide-contest/" />
+<meta property="og:site_name" content="veeman.github.io" />
+<meta property="og:image" content="https://veeman.github.io/images/2013-02-26-front-sokoslide.gif" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2013-02-26T00:00:00+01:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://veeman.github.io/images/2013-02-26-front-sokoslide.gif" />
+<meta property="twitter:title" content="Sokoslide Game - Contest" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","image":"https://veeman.github.io/images/2013-02-26-front-sokoslide.gif","url":"https://veeman.github.io/posts/2013/sokoslide-contest/","headline":"Sokoslide Game - Contest","dateModified":"2013-02-26T00:00:00+01:00","datePublished":"2013-02-26T00:00:00+01:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://veeman.github.io/posts/2013/sokoslide-contest/"},"author":{"@type":"Person","name":"Vitalij Mast"},"description":"Im Forum spiele­programmierer.de läuft zur Zeit ein Programmier-Contest in dem es gilt ein kleines Spiel Namens Sokoslide mit diversen Algorithmen so schnell wie möglich lösen zu lassen. Genaueres findet ihr in dem dazugehörigen Thread hier. Ich persönlich werde mich wahrscheinlich nicht mehr mit einer Implementierung, unter anderem da die Veranstaltung nur noch bis zum 3.3 läuft, eines Löse-System beschäftigen. Was ich jedoch mit diesem Beitrag vorstellen möchte, ist ein Programm welches ich bezüglich obigen Anlasses erstellt habe, mit welchem man Maps für das erwähnte Spiel erstellen und auch spielen kann.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+
+
+
+
+<meta property="og:description" content="
+Im Forum spiele­programmierer.de läuft zur Zeit ein Programmier-Contest in dem es gilt
+ein kleines Spiel Namens Sokoslide mit diversen Algorithmen so schnell wie möglich
+lösen zu lassen. Genaueres findet ihr in dem dazugehörigen Thread hier.
+
+Ich persönlich werde mich wahrscheinlich nicht mehr mit einer Implementierung, unter anderem da die Veranstaltung
+nur noch bis zum 3.3 läuft, eines Löse-System beschäftigen. Was ich jedoch mit diesem Beitrag vorstellen möchte,
+ist ein Programm welches ich bezüglich obigen Anlasses erstellt habe, 
+mit welchem man Maps für das erwähnte Spiel erstellen und auch spielen kann.
+
+" />
+
+<meta name="author" content="veeman.github.io" />
+
+
+<meta property="og:title" content="Sokoslide Game - Contest" />
+<meta property="twitter:title" content="Sokoslide Game - Contest" />
+
+
+
+<meta property="og:image" content="https://veeman.github.io/images/2013-02-26-front-sokoslide.gif"/>
+<meta property="twitter:image" content="https://veeman.github.io/images/2013-02-26-front-sokoslide.gif"/>
+
+
+
+    <link rel="stylesheet" type="text/css" href="/assets/style.css" />
+    <link rel="alternate" type="application/rss+xml" title="veeman.github.io - Persöhnlicher Blog" href="/feed.xml" />
+    <link rel="canonical" href="https://veeman.github.io/posts/2013/sokoslide-contest/" />
+
+    <meta name="theme-color" content="#000000">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    
+
+  </head>
+
+  <body>
+    <div class="wrapper-container">
+      <div class="wrapper-masthead">
+        <div class="container">
+          <header class="masthead clearfix">
+            <a href="/" class="site-avatar"><img src="/images/logo.png" alt="" /></a>
+
+            <div class="site-info">
+              <h1 class="site-name"><a href="/">veeman.github.io</a></h1>
+              <p class="site-description">Persöhnlicher Blog</p> 
+            </div>
+
+            <nav>
+              <a href="/">Blog</a>
+			  <a href="/pages/categories">Kategorien</a>
+              <a href="/pages/search">Suchen</a>
+            </nav>
+          </header>
+        </div>
+      </div>
+
+      <div class="wrapper-main">
+        <div id="main" role="main" class="container">
+          <article class="post detailed">
+  <h1>Sokoslide Game - Contest</h1>
+
+  <div>
+    <p class="author_title">Vitalij Mast · 26 Februar 2013</p>
+    
+    <div class="post-tags">
+      
+      
+        <a href="/pages/categories/#c/++">c/++</a>
+        &nbsp;
+      
+        <a href="/pages/categories/#qt">qt</a>
+        &nbsp;
+      
+        <a href="/pages/categories/#project">project</a>
+        
+      
+    </div>
+  </div>
+    
+  <div class="entry">
+    <p style="clear:both"><img src="/images/2013-02-26-front-sokoslide.gif" alt="" style="float:right" />
+Im Forum <a href="http://www.spieleprogrammierer.de/">spiele­programmierer.de</a> läuft zur Zeit ein Programmier-Contest in dem es gilt
+ein kleines Spiel Namens Sokoslide mit diversen Algorithmen so schnell wie möglich
+lösen zu lassen. Genaueres findet ihr in dem dazugehörigen Thread <a href="http://www.spieleprogrammierer.de/32-programmier-contests/19727-15-rutschige-angelegenheit-geschwindigkeit-03-03-2013/">hier</a>.
+<br />
+Ich persönlich werde mich wahrscheinlich nicht mehr mit einer Implementierung, unter anderem da die Veranstaltung
+nur noch bis zum 3.3 läuft, eines Löse-System beschäftigen. Was ich jedoch mit diesem Beitrag vorstellen möchte,
+ist ein Programm welches ich bezüglich obigen Anlasses erstellt habe, 
+mit welchem man Maps für das erwähnte Spiel erstellen und auch spielen kann.</p>
+
+<p>Ziel des Spieles ist es die runden Spielsteine in die farblich dazugehörigen Rechteckfelder mit so wenigen Zügen
+wie möglich zu bewegen. Dabei können die Steine in vier Richtungen bewegt werden, wobei diese in die ausgewählte
+Richtung solange „rutschen“ bis sie auf ein Hindernis, entweder ein anderer Spielstein oder eine Mauer, treffen.</p>
+
+<p>Den dazugehörigen Source-Code auf meinem Reposotory <a href="https://github.com/veeman/Sokoslide">hier</a> einsehen.</p>
+
+<p>Viel Spaß beim Spielen von Sokoslide.</p>
+
+
+  </div>
+
+  <div>
+    <p style="float:left"><span class="share-box">Teilen:</span> <a href="http://twitter.com/share?text=Sokoslide Game - Contest&url=https://veeman.github.io/posts/2013/sokoslide-contest/" target="_blank">Twitter</a>, <a href="https://www.facebook.com/sharer.php?u=https://veeman.github.io/posts/2013/sokoslide-contest/" target="_blank">Facebook</a></p>
+	<p style="float:right"><span class="share-box">Kommentieren:</span> <a href="mailto:vitali_mast@gmx.net?subject=Sokoslide Game - Contest"><i class="svg-glyph cmail"></i></a> </p>
+	<div style="clear:both"></div>
+  </div>
+
+  <!--<div class="date">Written on February 26, 2013</div>-->
+
+  
+</article>
+
+        </div>
+      </div>
+
+      <div class="wrapper-footer">
+        <div class="container">
+          <footer class="footer">
+		    <div class="footer-links">
+			  <a href="/pages/imprint">Impressum</a> - 
+			  <a href="/pages/privacy">Datenschutzerklärung</a>
+			</div>
+		    <div>
+				
+<a href="mailto:vitali_mast@gmx.net"><i class="svg-icon email"></i></a>
+
+
+<a href="https://github.com/veeman"><i class="svg-icon github"></i></a>
+
+
+
+<a href="/feed.xml"><i class="svg-icon rss"></i></a>
+
+<a href="http://stackoverflow.com/users/5388805/veeman"><i class="svg-icon stackoverflow"></i></a>
+
+
+
+
+			</div>
+          </footer>
+        </div>
+      </div>
+    </div>
+
+    
+
+  </body>
+</html>

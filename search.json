@@ -1,0 +1,75 @@
+[
+  
+    {
+
+      "title"    : "Neuer Hoster",
+      "url"      : "/posts/2021/new-host/",
+      "category" : "news, github",
+      "date"     : "24 April 2021"
+    } ,
+  
+    {
+
+      "title"    : "Python: Kommandozeilen&shy;interpretation",
+      "url"      : "/posts/2020/python-cli-with-argparse/",
+      "category" : "python, parse, cli",
+      "date"     : "22 März 2020"
+    } ,
+  
+    {
+
+      "title"    : "Design Update",
+      "url"      : "/posts/2013/design-update/",
+      "category" : "news, qt",
+      "date"     : "7 April 2013"
+    } ,
+  
+    {
+
+      "title"    : "Sokoslide Game - Contest",
+      "url"      : "/posts/2013/sokoslide-contest/",
+      "category" : "c/++, qt, project",
+      "date"     : "26 Februar 2013"
+    } ,
+  
+    {
+
+      "title"    : "Qt: Benutzer&shy;definiertes Widget",
+      "url"      : "/posts/2013/qt-customwidget/",
+      "category" : "c/++, qt",
+      "date"     : "2 Februar 2013"
+    } ,
+  
+    {
+
+      "title"    : "Qt JSON Benutzeroberfläche Übersetzen",
+      "url"      : "/posts/2012/qt-json-translator/",
+      "category" : "c/++, qt, widget, paint, draw",
+      "date"     : "4 November 2012"
+    } ,
+  
+    {
+
+      "title"    : "Platinenbelichter im Selbstbau",
+      "url"      : "/posts/2012/pcp-exposure-system-diy/",
+      "category" : "c/++, project, uc",
+      "date"     : "22 Oktober 2012"
+    } ,
+  
+    {
+
+      "title"    : "Digitaler Feuchtesensor SHT1x",
+      "url"      : "/posts/2012/digital-humidity-sensor-sht1x/",
+      "category" : "arduino, c/++, ic, sensor, sht15, sht1x",
+      "date"     : "17 Oktober 2012"
+    } ,
+  
+    {
+
+      "title"    : "Blog Online",
+      "url"      : "/posts/2012/blog-online/",
+      "category" : "news",
+      "date"     : "12 Oktober 2012"
+    } 
+  
+]
